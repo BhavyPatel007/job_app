@@ -1,15 +1,12 @@
-// server/db.ts
-import { drizzle } from "drizzle-orm/node-postgres";
-import { Pool } from "pg";
+// server/db.ts (or index.ts before using supabase)
+import { createClient } from '@supabase/supabase-js';
 import "dotenv/config";
 
-if (!process.env.DATABASE_URL) {
-  throw new Error("DATABASE_URL must be set in .env");
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_KEY;
+
+if (!supabaseUrl || !supabaseKey) {
+  throw new Error('SUPABASE_URL and SUPABASE_KEY are required in .env');
 }
 
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: { rejectUnauthorized: false }
-});
-
-export const db = drizzle(pool);
+export const supabase = createClient(supabaseUrl, supabaseKey);

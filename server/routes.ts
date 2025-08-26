@@ -1,202 +1,196 @@
 import type { Express, Request } from "express";
 import { createServer, type Server } from "http";
-import { storage } from "./storage";
+import { supabase } from "../server";
 import { insertJobApplicationSchema, insertContactMessageSchema } from "@shared/schema";
 import multer, { FileFilterCallback } from "multer";
 import path from "path";
 import fs from "fs";
 
-// Configure multer for file uploads
-const uploadDir = path.join(process.cwd(), "uploads");
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
-}
+// Configure multer for temporary uploads
+const uploadDir = path.join(process.cwd(), "tmp_uploads");
+if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
 
 const upload = multer({
   dest: uploadDir,
-  limits: {
-    fileSize: 10 * 1024 * 1024, // 10MB limit
-  },
+  limits: { fileSize: 10 * 1024 * 1024 }, // 10MB
   fileFilter: (req: Request, file: Express.Multer.File, cb: FileFilterCallback) => {
     const allowedTypes = [
-      'application/pdf',
-      'application/msword',
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-      'image/jpeg',
-      'image/png',
-      'image/jpg'
+      "application/pdf",
+      "application/msword",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      "image/jpeg",
+      "image/png",
+      "image/jpg",
     ];
-    
-    if (allowedTypes.includes(file.mimetype)) {
-      cb(null, true);
-    } else {
-      cb(new Error('Invalid file type. Only PDF, DOC, DOCX, and images are allowed.'));
-    }
-  }
+    if (allowedTypes.includes(file.mimetype)) cb(null, true);
+    else cb(new Error("Invalid file type. Only PDF, DOC, DOCX, and images are allowed."));
+  },
 });
 
+// Helper: Upload file to Supabase Storage
+async function uploadFileToSupabase(file: Express.Multer.File) {
+  const fileData = fs.readFileSync(file.path);
+  const filePath = `uploads/${Date.now()}_${file.originalname}`;
+
+  const { error } = await supabase.storage.from("uploads").upload(filePath, fileData);
+  if (error) throw error;
+
+  fs.unlinkSync(file.path); // remove local temp file
+
+  const { publicUrl } = supabase.storage.from("uploads").getPublicUrl(filePath);
+  return publicUrl;
+}
+
+// Register all routes
 export async function registerRoutes(app: Express): Promise<Server> {
-  
-  // Jobs endpoints
+  // ----- Jobs -----
   app.get("/api/jobs", async (req, res) => {
     try {
-      const { 
-        search, 
-        location, 
-        type, 
-        experienceLevel, 
-        salaryMin, 
-        salaryMax, 
-        limit = "20", 
-        offset = "0" 
-      } = req.query;
-
-      const filters = {
-        search: search as string,
-        location: location as string,
-        type: type as string,
-        experienceLevel: experienceLevel as string,
-        salaryMin: salaryMin ? parseInt(salaryMin as string) : undefined,
-        salaryMax: salaryMax ? parseInt(salaryMax as string) : undefined,
-        limit: parseInt(limit as string),
-        offset: parseInt(offset as string)
-      };
-
-      const jobs = await storage.getJobs(filters);
-      res.json(jobs);
-    } catch (error) {
-      console.error("Error fetching jobs:", error);
+      const { data, error } = await supabase.from("jobs").select("*");
+      if (error) throw error;
+      res.json(data);
+    } catch (err) {
+      console.error(err);
       res.status(500).json({ error: "Failed to fetch jobs" });
     }
   });
 
   app.get("/api/jobs/featured", async (req, res) => {
     try {
-      const { limit = "6" } = req.query;
-      const jobs = await storage.getFeaturedJobs(parseInt(limit as string));
-      res.json(jobs);
-    } catch (error) {
-      console.error("Error fetching featured jobs:", error);
+      const { data, error } = await supabase.from("jobs").select("*").limit(6);
+      if (error) throw error;
+      res.json(data);
+    } catch (err) {
+      console.error(err);
       res.status(500).json({ error: "Failed to fetch featured jobs" });
     }
   });
 
   app.get("/api/jobs/:id", async (req, res) => {
     try {
-      const job = await storage.getJob(req.params.id);
-      if (!job) {
-        return res.status(404).json({ error: "Job not found" });
-      }
-      res.json(job);
-    } catch (error) {
-      console.error("Error fetching job:", error);
+      const { data, error } = await supabase
+        .from("jobs")
+        .select("*")
+        .eq("id", req.params.id)
+        .single();
+      if (error || !data) return res.status(404).json({ error: "Job not found" });
+      res.json(data);
+    } catch (err) {
+      console.error(err);
       res.status(500).json({ error: "Failed to fetch job" });
     }
   });
 
-  // Job applications endpoint
-  app.post("/api/jobs/:jobId/apply", upload.fields([
-    { name: 'resume', maxCount: 1 },
-    { name: 'coverLetter', maxCount: 1 },
-    { name: 'additionalFiles', maxCount: 5 }
-  ]), async (req, res) => {
-    try {
-      const jobId = req.params.jobId;
-      
-      // Verify job exists
-      const job = await storage.getJob(jobId);
-      if (!job) {
-        return res.status(404).json({ error: "Job not found" });
+  // ----- Job Applications -----
+  app.post(
+    "/api/jobs/:jobId/apply",
+    upload.fields([
+      { name: "resume", maxCount: 1 },
+      { name: "coverLetter", maxCount: 1 },
+      { name: "additionalFiles", maxCount: 5 },
+    ]),
+    async (req, res) => {
+      try {
+        const jobId = req.params.jobId;
+
+        // Verify job exists
+        const { data: job, error: jobError } = await supabase
+          .from("jobs")
+          .select("*")
+          .eq("id", jobId)
+          .single();
+        if (jobError || !job) return res.status(404).json({ error: "Job not found" });
+
+        const files = req.files as { [fieldname: string]: Express.Multer.File[] } | undefined;
+
+        const resumeUrl = files?.resume?.[0] ? await uploadFileToSupabase(files.resume[0]) : undefined;
+        const coverLetterUrl = files?.coverLetter?.[0] ? await uploadFileToSupabase(files.coverLetter[0]) : undefined;
+        const additionalFiles = [];
+
+        if (files?.additionalFiles) {
+          for (const f of files.additionalFiles) {
+            additionalFiles.push(await uploadFileToSupabase(f));
+          }
+        }
+
+        const applicationData = {
+          ...req.body,
+          job_id: jobId,
+          resume_url: resumeUrl,
+          cover_letter_url: coverLetterUrl,
+          additional_files: additionalFiles,
+        };
+
+        const validatedData = insertJobApplicationSchema.parse(applicationData);
+
+        const { data: application, error } = await supabase
+          .from("job_applications")
+          .insert([validatedData])
+          .select()
+          .single();
+
+        if (error) throw error;
+        res.status(201).json(application);
+      } catch (err) {
+        console.error(err);
+        res.status(400).json({ error: "Failed to create job application" });
       }
-
-      const files = req.files as { [fieldname: string]: Express.Multer.File[] } | undefined;
-      
-      // Process uploaded files
-      const resumeUrl = files?.resume?.[0]?.filename || undefined;
-      const coverLetterUrl = files?.coverLetter?.[0]?.filename || undefined;
-      const additionalFiles = files?.additionalFiles?.map(file => file.filename) || [];
-
-      const applicationData = {
-        ...req.body,
-        jobId,
-        resumeUrl,
-        coverLetterUrl,
-        additionalFiles
-      };
-
-      const validatedData = insertJobApplicationSchema.parse(applicationData);
-      const application = await storage.createJobApplication(validatedData);
-      
-      res.status(201).json(application);
-    } catch (error) {
-      console.error("Error creating job application:", error);
-      res.status(400).json({ error: "Failed to create job application" });
     }
-  });
+  );
 
-  // Serve uploaded files
-  app.get("/api/uploads/:filename", (req, res) => {
-    const filename = req.params.filename;
-    const filePath = path.join(uploadDir, filename);
-    
-    if (fs.existsSync(filePath)) {
-      res.sendFile(filePath);
-    } else {
-      res.status(404).json({ error: "File not found" });
-    }
-  });
-
-  // Blog endpoints
-  app.get("/api/blog", async (req, res) => {
+  // ----- Blog -----
+  app.get("/api/blog", async (_req, res) => {
     try {
-      const { limit = "20", offset = "0" } = req.query;
-      const posts = await storage.getBlogPosts(
-        parseInt(limit as string), 
-        parseInt(offset as string)
-      );
-      res.json(posts);
-    } catch (error) {
-      console.error("Error fetching blog posts:", error);
+      const { data, error } = await supabase.from("blog_posts").select("*").limit(20);
+      if (error) throw error;
+      res.json(data);
+    } catch (err) {
+      console.error(err);
       res.status(500).json({ error: "Failed to fetch blog posts" });
     }
   });
 
   app.get("/api/blog/:slug", async (req, res) => {
     try {
-      const post = await storage.getBlogPostBySlug(req.params.slug);
-      if (!post) {
-        return res.status(404).json({ error: "Blog post not found" });
-      }
-      res.json(post);
-    } catch (error) {
-      console.error("Error fetching blog post:", error);
+      const { data, error } = await supabase
+        .from("blog_posts")
+        .select("*")
+        .eq("slug", req.params.slug)
+        .single();
+      if (error || !data) return res.status(404).json({ error: "Blog post not found" });
+      res.json(data);
+    } catch (err) {
+      console.error(err);
       res.status(500).json({ error: "Failed to fetch blog post" });
     }
   });
 
-  // Companies endpoint
-  app.get("/api/companies", async (req, res) => {
+  // ----- Companies -----
+  app.get("/api/companies", async (_req, res) => {
     try {
-      const companies = await storage.getCompanies();
-      res.json(companies);
-    } catch (error) {
-      console.error("Error fetching companies:", error);
+      const { data, error } = await supabase.from("companies").select("*");
+      if (error) throw error;
+      res.json(data);
+    } catch (err) {
+      console.error(err);
       res.status(500).json({ error: "Failed to fetch companies" });
     }
   });
 
-  // Contact endpoint
+  // ----- Contact -----
   app.post("/api/contact", async (req, res) => {
     try {
       const validatedData = insertContactMessageSchema.parse(req.body);
-      const message = await storage.createContactMessage(validatedData);
-      res.status(201).json(message);
-    } catch (error) {
-      console.error("Error creating contact message:", error);
+      const { data, error } = await supabase.from("contact_messages").insert([validatedData]).select().single();
+      if (error) throw error;
+      res.status(201).json(data);
+    } catch (err) {
+      console.error(err);
       res.status(400).json({ error: "Failed to send message" });
     }
   });
 
+  // Create HTTP server
   const httpServer = createServer(app);
   return httpServer;
 }

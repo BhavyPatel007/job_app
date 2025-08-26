@@ -19,7 +19,7 @@ import {
   type InsertUser,
   users
 } from "@shared/schema";
-import { db } from "./db";
+import { supabase } from "./db";
 import { eq, desc, and, ilike, gte, lte, sql } from "drizzle-orm";
 
 export interface IStorage {
@@ -64,45 +64,87 @@ export interface IStorage {
   createContactMessage(message: InsertContactMessage): Promise<ContactMessage>;
 }
 
-export class DatabaseStorage implements IStorage {
-  // User methods
+export class DatabaseStorage {
+  // ----------------- Users -----------------
   async getUser(id: string): Promise<User | undefined> {
-    const [user] = await db.select().from(users).where(eq(users.id, id));
-    return user || undefined;
-  }
-
-  async getUserByUsername(username: string): Promise<User | undefined> {
-    const [user] = await db.select().from(users).where(eq(users.username, username));
-    return user || undefined;
-  }
-
-  async createUser(insertUser: InsertUser): Promise<User> {
-    const [user] = await db
-      .insert(users)
-      .values([insertUser])
-      .returning();
+    const { data: user, error } = await supabase
+      .from("users")
+      .select("*")
+      .eq("id", id)
+      .single();
+    if (error) {
+      console.error("getUser error:", error);
+      return undefined;
+    }
     return user;
   }
 
-  // Company methods
+  async getUserByUsername(username: string): Promise<User | undefined> {
+    const { data: user, error } = await supabase
+      .from("users")
+      .select("*")
+      .eq("username", username)
+      .single();
+    if (error) {
+      console.error("getUserByUsername error:", error);
+      return undefined;
+    }
+    return user;
+  }
+
+  async createUser(insertUser: InsertUser): Promise<User | undefined> {
+    const { data: user, error } = await supabase
+      .from("users")
+      .insert([insertUser])
+      .select()
+      .single();
+    if (error) {
+      console.error("createUser error:", error);
+      return undefined;
+    }
+    return user;
+  }
+
+  // ----------------- Companies -----------------
   async getCompanies(): Promise<Company[]> {
-    return await db.select().from(companies).orderBy(desc(companies.createdAt));
+    const { data, error } = await supabase
+      .from("companies")
+      .select("*")
+      .order("createdAt", { ascending: false });
+    if (error) {
+      console.error("getCompanies error:", error);
+      return [];
+    }
+    return data || [];
   }
 
   async getCompany(id: string): Promise<Company | undefined> {
-    const [company] = await db.select().from(companies).where(eq(companies.id, id));
-    return company || undefined;
+    const { data, error } = await supabase
+      .from("companies")
+      .select("*")
+      .eq("id", id)
+      .single();
+    if (error) {
+      console.error("getCompany error:", error);
+      return undefined;
+    }
+    return data;
   }
 
-  async createCompany(company: InsertCompany): Promise<Company> {
-    const [newCompany] = await db
-      .insert(companies)
-      .values([company])
-      .returning();
-    return newCompany;
+  async createCompany(company: InsertCompany): Promise<Company | undefined> {
+    const { data, error } = await supabase
+      .from("companies")
+      .insert([company])
+      .select()
+      .single();
+    if (error) {
+      console.error("createCompany error:", error);
+      return undefined;
+    }
+    return data;
   }
 
-  // Job methods
+  // ----------------- Jobs -----------------
   async getJobs(filters?: {
     search?: string;
     location?: string;
@@ -113,164 +155,205 @@ export class DatabaseStorage implements IStorage {
     limit?: number;
     offset?: number;
   }): Promise<JobWithCompany[]> {
-    const conditions = [eq(jobs.isActive, true)];
+    let query = supabase
+      .from("jobs")
+      .select("*, company:companies(*)")
+      .eq("isActive", true);
 
     if (filters?.search) {
-      conditions.push(
-        sql`(${ilike(jobs.title, `%${filters.search}%`)} OR ${ilike(jobs.description, `%${filters.search}%`)})`
-      );
+      query = query.ilike("title", `%${filters.search}%`);
     }
-
     if (filters?.location) {
-      conditions.push(ilike(jobs.location, `%${filters.location}%`));
+      query = query.ilike("location", `%${filters.location}%`);
     }
-
     if (filters?.type) {
-      conditions.push(eq(jobs.type, filters.type));
+      query = query.eq("type", filters.type);
     }
-
     if (filters?.experienceLevel) {
-      conditions.push(eq(jobs.experienceLevel, filters.experienceLevel));
+      query = query.eq("experienceLevel", filters.experienceLevel);
     }
-
     if (filters?.salaryMin) {
-      conditions.push(gte(jobs.salaryMin, filters.salaryMin));
+      query = query.gte("salaryMin", filters.salaryMin);
     }
-
     if (filters?.salaryMax) {
-      conditions.push(lte(jobs.salaryMax, filters.salaryMax));
+      query = query.lte("salaryMax", filters.salaryMax);
     }
-
-    let query = db
-      .select()
-      .from(jobs)
-      .leftJoin(companies, eq(jobs.companyId, companies.id))
-      .where(and(...conditions))
-      .orderBy(desc(jobs.postedAt));
-
     if (filters?.limit) {
       query = query.limit(filters.limit);
     }
-
     if (filters?.offset) {
       query = query.offset(filters.offset);
     }
 
-    const results = await query;
+    const { data, error } = await query.order("postedAt", { ascending: false });
+    if (error) {
+      console.error("getJobs error:", error);
+      return [];
+    }
 
-    return results.map(result => ({
-      ...result.jobs,
-      company: result.companies!
-    }));
+    return (data as JobWithCompany[]) || [];
   }
 
   async getJob(id: string): Promise<JobWithCompany | undefined> {
-    const [result] = await db
-      .select()
-      .from(jobs)
-      .leftJoin(companies, eq(jobs.companyId, companies.id))
-      .where(and(eq(jobs.id, id), eq(jobs.isActive, true)));
-
-    if (!result) return undefined;
-
-    return {
-      ...result.jobs,
-      company: result.companies!
-    };
+    const { data, error } = await supabase
+      .from("jobs")
+      .select("*, company:companies(*)")
+      .eq("id", id)
+      .eq("isActive", true)
+      .single();
+    if (error) {
+      console.error("getJob error:", error);
+      return undefined;
+    }
+    return data as JobWithCompany;
   }
 
   async getFeaturedJobs(limit = 6): Promise<JobWithCompany[]> {
-    const results = await db
-      .select()
-      .from(jobs)
-      .leftJoin(companies, eq(jobs.companyId, companies.id))
-      .where(eq(jobs.isActive, true))
-      .orderBy(desc(jobs.postedAt))
+    const { data, error } = await supabase
+      .from("jobs")
+      .select("*, company:companies(*)")
+      .eq("isActive", true)
+      .order("postedAt", { ascending: false })
       .limit(limit);
-
-    return results.map(result => ({
-      ...result.jobs,
-      company: result.companies!
-    }));
-  }
-
-  async createJob(job: InsertJob): Promise<Job> {
-    const [newJob] = await db
-      .insert(jobs)
-      .values([job])
-      .returning();
-    return newJob;
-  }
-
-  // Job application methods
-  async getJobApplications(jobId?: string): Promise<JobApplication[]> {
-    if (jobId) {
-      return await db.select().from(jobApplications)
-        .where(eq(jobApplications.jobId, jobId))
-        .orderBy(desc(jobApplications.appliedAt));
+    if (error) {
+      console.error("getFeaturedJobs error:", error);
+      return [];
     }
+    return data as JobWithCompany[];
+  }
 
-    return await db.select().from(jobApplications)
-      .orderBy(desc(jobApplications.appliedAt));
+  async createJob(job: InsertJob): Promise<Job | undefined> {
+    const { data, error } = await supabase
+      .from("jobs")
+      .insert([job])
+      .select()
+      .single();
+    if (error) {
+      console.error("createJob error:", error);
+      return undefined;
+    }
+    return data;
+  }
+
+  // ----------------- Job Applications -----------------
+  async getJobApplications(jobId?: string): Promise<JobApplication[]> {
+    let query = supabase.from("jobApplications").select("*");
+    if (jobId) query = query.eq("jobId", jobId);
+    const { data, error } = await query.order("appliedAt", { ascending: false });
+    if (error) {
+      console.error("getJobApplications error:", error);
+      return [];
+    }
+    return data || [];
   }
 
   async getJobApplication(id: string): Promise<JobApplication | undefined> {
-    const [application] = await db.select().from(jobApplications).where(eq(jobApplications.id, id));
-    return application || undefined;
+    const { data, error } = await supabase
+      .from("jobApplications")
+      .select("*")
+      .eq("id", id)
+      .single();
+    if (error) {
+      console.error("getJobApplication error:", error);
+      return undefined;
+    }
+    return data;
   }
 
-  async createJobApplication(application: InsertJobApplication): Promise<JobApplication> {
-    const [newApplication] = await db
-      .insert(jobApplications)
-      .values([application])
-      .returning();
-    return newApplication;
-  }
-
-  // Blog methods
-  async getBlogPosts(limit = 20, offset = 0): Promise<BlogPost[]> {
-    return await db
+  async createJobApplication(application: InsertJobApplication): Promise<JobApplication | undefined> {
+    const { data, error } = await supabase
+      .from("jobApplications")
+      .insert([application])
       .select()
-      .from(blogPosts)
-      .where(eq(blogPosts.isPublished, true))
-      .orderBy(desc(blogPosts.publishedAt))
+      .single();
+    if (error) {
+      console.error("createJobApplication error:", error);
+      return undefined;
+    }
+    return data;
+  }
+
+  // ----------------- Blog -----------------
+  async getBlogPosts(limit = 20, offset = 0): Promise<BlogPost[]> {
+    const { data, error } = await supabase
+      .from("blogPosts")
+      .select("*")
+      .eq("isPublished", true)
+      .order("publishedAt", { ascending: false })
       .limit(limit)
       .offset(offset);
+    if (error) {
+      console.error("getBlogPosts error:", error);
+      return [];
+    }
+    return data || [];
   }
 
   async getBlogPost(id: string): Promise<BlogPost | undefined> {
-    const [post] = await db.select().from(blogPosts).where(
-      and(eq(blogPosts.id, id), eq(blogPosts.isPublished, true))
-    );
-    return post || undefined;
+    const { data, error } = await supabase
+      .from("blogPosts")
+      .select("*")
+      .eq("id", id)
+      .eq("isPublished", true)
+      .single();
+    if (error) {
+      console.error("getBlogPost error:", error);
+      return undefined;
+    }
+    return data;
   }
 
   async getBlogPostBySlug(slug: string): Promise<BlogPost | undefined> {
-    const [post] = await db.select().from(blogPosts).where(
-      and(eq(blogPosts.slug, slug), eq(blogPosts.isPublished, true))
-    );
-    return post || undefined;
+    const { data, error } = await supabase
+      .from("blogPosts")
+      .select("*")
+      .eq("slug", slug)
+      .eq("isPublished", true)
+      .single();
+    if (error) {
+      console.error("getBlogPostBySlug error:", error);
+      return undefined;
+    }
+    return data;
   }
 
-  async createBlogPost(blogPost: InsertBlogPost): Promise<BlogPost> {
-    const [newPost] = await db
-      .insert(blogPosts)
-      .values([blogPost])
-      .returning();
-    return newPost;
+  async createBlogPost(blogPost: InsertBlogPost): Promise<BlogPost | undefined> {
+    const { data, error } = await supabase
+      .from("blogPosts")
+      .insert([blogPost])
+      .select()
+      .single();
+    if (error) {
+      console.error("createBlogPost error:", error);
+      return undefined;
+    }
+    return data;
   }
 
-  // Contact methods
+  // ----------------- Contact -----------------
   async getContactMessages(): Promise<ContactMessage[]> {
-    return await db.select().from(contactMessages).orderBy(desc(contactMessages.createdAt));
+    const { data, error } = await supabase
+      .from("contactMessages")
+      .select("*")
+      .order("createdAt", { ascending: false });
+    if (error) {
+      console.error("getContactMessages error:", error);
+      return [];
+    }
+    return data || [];
   }
 
-  async createContactMessage(message: InsertContactMessage): Promise<ContactMessage> {
-    const [newMessage] = await db
-      .insert(contactMessages)
-      .values([message])
-      .returning();
-    return newMessage;
+  async createContactMessage(message: InsertContactMessage): Promise<ContactMessage | undefined> {
+    const { data, error } = await supabase
+      .from("contactMessages")
+      .insert([message])
+      .select()
+      .single();
+    if (error) {
+      console.error("createContactMessage error:", error);
+      return undefined;
+    }
+    return data;
   }
 }
 

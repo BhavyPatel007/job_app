@@ -1,17 +1,24 @@
+import 'dotenv/config';
 import express, { type Request, Response, NextFunction } from "express";
 import path from "path";
+import { createClient } from "@supabase/supabase-js";
 import { registerRoutes } from "./routes";
-import { setupVite, serveStatic, log } from "./vite";
+import { setupVite, log } from "./vite";
+
+// Initialize Supabase client
+const supabaseUrl = process.env.SUPABASE_URL!;
+const supabaseKey = process.env.SUPABASE_KEY!;
+export const supabase = createClient(supabaseUrl, supabaseKey);
 
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-// middleware for logging api responses
+// Middleware: API logging
 app.use((req, res, next) => {
   const start = Date.now();
   const pathUrl = req.path;
-  let capturedJsonResponse: Record<string, any> | undefined = undefined;
+  let capturedJsonResponse: Record<string, any> | undefined;
 
   const originalResJson = res.json;
   res.json = function (bodyJson, ...args) {
@@ -23,9 +30,7 @@ app.use((req, res, next) => {
     const duration = Date.now() - start;
     if (pathUrl.startsWith("/api")) {
       let logLine = `${req.method} ${pathUrl} ${res.statusCode} in ${duration}ms`;
-      if (capturedJsonResponse) {
-        logLine += ` :: ${JSON.stringify(capturedJsonResponse)}`;
-      }
+      if (capturedJsonResponse) logLine += ` :: ${JSON.stringify(capturedJsonResponse)}`;
       if (logLine.length > 120) logLine = logLine.slice(0, 119) + "…";
       log(logLine);
     }
@@ -34,34 +39,33 @@ app.use((req, res, next) => {
   next();
 });
 
+// Register routes (example: /api/users)
 (async () => {
   const server = await registerRoutes(app);
 
-  // error handler
+  // Global error handler
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
     const status = err.status || err.statusCode || 500;
     const message = err.message || "Internal Server Error";
     res.status(status).json({ message });
-    throw err;
+    console.error(err);
   });
 
   if (app.get("env") === "development") {
-    // Vite dev server
+    // Setup Vite dev server
     await setupVite(app, server);
   } else {
-    // ✅ Serve built frontend from dist/
+    // Serve built frontend from dist/
     const distPath = path.join(__dirname, "dist");
     app.use(express.static(distPath));
 
-    // fallback for React Router (SPA)
+    // Fallback for React Router SPA
     app.get("*", (_req, res) => {
       res.sendFile(path.join(distPath, "index.html"));
     });
   }
 
-  // use PORT from env or default
-  const port = parseInt(process.env.PORT || "5000", 10);
-  server.listen(port, "0.0.0.0", () => {
-    log(`🚀 Server running at http://localhost:${port}`);
-  });
+  // Backend port (different from Vite frontend)
+  const port = parseInt(process.env.PORT || "6543", 10);
+  app.listen(port, "0.0.0.0", () => log(`🚀 Backend running at http://localhost:${port}`));
 })();
