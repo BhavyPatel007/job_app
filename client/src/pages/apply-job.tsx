@@ -133,7 +133,7 @@ export default function ApplyJob() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen py-16">
+      <div className="min-h-screen pb-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="animate-pulse">
             <div className="h-8 bg-gray-200 rounded mb-6 w-1/3"></div>
@@ -154,7 +154,7 @@ export default function ApplyJob() {
 
   if (!job) {
     return (
-      <div className="min-h-screen py-16">
+      <div className="min-h-screen pb-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <Card>
             <CardContent className="pt-6">
@@ -177,7 +177,7 @@ export default function ApplyJob() {
   }
 
   return (
-    <div className="min-h-screen py-16 bg-light">
+    <div className="min-h-screen pb-16 bg-light">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Back Button */}
         <Link href={`/jobs/${jobId}`} data-testid="link-back-to-job">

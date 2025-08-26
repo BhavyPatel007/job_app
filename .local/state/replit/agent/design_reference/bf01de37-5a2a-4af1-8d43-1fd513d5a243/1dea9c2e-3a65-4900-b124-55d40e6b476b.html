@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DataMind Jobs - Professional Career Opportunities</title>
+    <meta name="description" content="Find your next career opportunity with DataMind Jobs. Professional job listings, career resources, and expert guidance for job seekers.">
+    <meta name="keywords" content="jobs, careers, employment, job search, professional opportunities">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                fontFamily: {
+                    'sans': ['Inter', 'sans-serif'],
+                },
+                colors: {
+                    primary: '#2563EB',
+                    secondary: '#1E40AF',
+                    accent: '#10B981',
+                    neutral: '#6B7280',
+                    light: '#F8FAFC',
+                }
+            }
+        }
+    };
+    </script>
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-white font-sans">
+    <!-- @COMPONENT: Header Navigation -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <h1 class="text-2xl font-bold text-primary">DataMind Jobs</h1>
+                    </div>
+                </div>
+                
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="#home" class="text-gray-900 hover:text-primary px-3 py-2 text-sm font-medium transition-colors">Home</a>
+                        <a href="#jobs" class="text-neutral hover:text-primary px-3 py-2 text-sm font-medium transition-colors">Jobs</a>
+                        <a href="#blog" class="text-neutral hover:text-primary px-3 py-2 text-sm font-medium transition-colors">Blog</a>
+                        <a href="#about" class="text-neutral hover:text-primary px-3 py-2 text-sm font-medium transition-colors">About</a>
+                        <a href="#contact" class="text-neutral hover:text-primary px-3 py-2 text-sm font-medium transition-colors">Contact</a>
+                    </div>
+                </div>
+                
+                <div class="hidden md:block">
+                    <button class="bg-primary text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-secondary transition-colors">
+                        Post a Job
+                    </button>
+                </div>
+                
+                <!-- Mobile menu button -->
+                <div class="md:hidden">
+                    <button class="text-gray-500 hover:text-gray-900" data-event="click:toggleMobileMenu">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </nav>
+        
+        <!-- Mobile Navigation Menu -->
+        <div class="md:hidden hidden bg-white border-t border-gray-200" data-bind="mobileMenuOpen">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="#home" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-primary">Home</a>
+                <a href="#jobs" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-primary">Jobs</a>
+                <a href="#blog" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-primary">Blog</a>
+                <a href="#about" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-primary">About</a>
+                <a href="#contact" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-primary">Contact</a>
+                <button class="w-full text-left bg-primary text-white px-3 py-2 text-base font-medium rounded-md">
+                    Post a Job
+                </button>
+            </div>
+        </div>
+    </header>
+    <!-- @END_COMPONENT: Header Navigation -->
+
+    <!-- @COMPONENT: Hero Section -->
+    <section id="home" class="bg-gradient-to-r from-primary to-secondary text-white py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h1 class="text-4xl md:text-5xl font-bold mb-6">Find Your Dream Career Today</h1>
+                    <p class="text-xl mb-8 opacity-90">Connect with top employers and discover professional opportunities that match your skills and aspirations.</p>
+                    
+                    <!-- Job Search Form -->
+                    <div class="bg-white rounded-lg p-6 shadow-xl">
+                        <form class="flex flex-col md:flex-row gap-4" data-event="submit:handleJobSearch">
+                            <div class="flex-1">
+                                <input type="text" 
+                                       placeholder="Job title, keywords..." 
+                                       class="w-full px-4 py-3 border border-gray-300 rounded-md text-gray-900 focus:ring-2 focus:ring-primary focus:border-primary"
+                                       data-bind="searchQuery">
+                            </div>
+                            <div class="flex-1">
+                                <input type="text" 
+                                       placeholder="Location" 
+                                       class="w-full px-4 py-3 border border-gray-300 rounded-md text-gray-900 focus:ring-2 focus:ring-primary focus:border-primary"
+                                       data-bind="searchLocation">
+                            </div>
+                            <button type="submit" 
+                                    class="bg-primary hover:bg-secondary text-white px-8 py-3 rounded-md font-medium transition-colors">
+                                <i class="fas fa-search mr-2"></i>Search Jobs
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                
+                <div class="hidden md:block">
+                    <!-- Professional office workplace image -->
+                    <img src="https://images.unsplash.com/photo-1497032628192-86f99bcd76bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=600" 
+                         alt="Professional office workplace" 
+                         class="rounded-lg shadow-2xl w-full h-auto">
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: Hero Section -->
+
+    <!-- @COMPONENT: Featured Jobs Section -->
+    <section class="py-16 bg-light">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Featured Job Opportunities</h2>
+                <p class="text-xl text-neutral">Discover hand-picked career opportunities from top companies</p>
+            </div>
+            
+            <!-- AdSense Placeholder -->
+            <div class="bg-gray-100 border border-gray-300 rounded-lg p-4 mb-12 text-center text-gray-500">
+                <!-- AdSense Advertisement Space (728x90) -->
+                <div class="h-20 flex items-center justify-center text-sm">Advertisement Space</div>
+            </div>
+            
+            <!-- @MAP: featuredJobs.map(job => ( -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Job Card 1 -->
+                <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow" data-mock="true">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 bg-primary rounded-lg flex items-center justify-center text-white font-bold">
+                                TG
+                            </div>
+                            <div class="ml-3">
+                                <h3 class="font-semibold text-gray-900" data-bind="job.company">TechGlobal Inc</h3>
+                                <p class="text-sm text-neutral" data-bind="job.location">San Francisco, CA</p>
+                            </div>
+                        </div>
+                        <span class="bg-accent text-white text-xs px-2 py-1 rounded-full" data-bind="job.type">Full-time</span>
+                    </div>
+                    
+                    <h4 class="text-lg font-semibold text-gray-900 mb-2" data-bind="job.title">Senior Software Engineer</h4>
+                    <p class="text-neutral mb-4" data-bind="job.description">
+                        Join our innovative team building next-generation web applications. We're looking for an experienced engineer...
+                    </p>
+                    
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded">React</span>
+                        <span class="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded">Node.js</span>
+                        <span class="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded">MongoDB</span>
+                    </div>
+                    
+                    <div class="flex justify-between items-center">
+                        <span class="text-primary font-semibold" data-bind="job.salary">$120k - $160k</span>
+                        <button class="text-primary hover:text-secondary font-medium" data-event="click:viewJob">
+                            View Details <i class="fas fa-arrow-right ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Job Card 2 -->
+                <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow" data-mock="true">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 bg-accent rounded-lg flex items-center justify-center text-white font-bold">
+                                DS
+                            </div>
+                            <div class="ml-3">
+                                <h3 class="font-semibold text-gray-900" data-bind="job.company">DataSolutions Corp</h3>
+                                <p class="text-sm text-neutral" data-bind="job.location">New York, NY</p>
+                            </div>
+                        </div>
+                        <span class="bg-secondary text-white text-xs px-2 py-1 rounded-full" data-bind="job.type">Remote</span>
+                    </div>
+                    
+                    <h4 class="text-lg font-semibold text-gray-900 mb-2" data-bind="job.title">Data Analyst</h4>
+                    <p class="text-neutral mb-4" data-bind="job.description">
+                        Analyze complex datasets to drive business decisions. Perfect opportunity for a detail-oriented professional...
+                    </p>
+                    
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded">Python</span>
+                        <span class="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded">SQL</span>
+                        <span class="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded">Tableau</span>
+                    </div>
+                    
+                    <div class="flex justify-between items-center">
+                        <span class="text-primary font-semibold" data-bind="job.salary">$85k - $110k</span>
+                        <button class="text-primary hover:text-secondary font-medium" data-event="click:viewJob">
+                            View Details <i class="fas fa-arrow-right ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Job Card 3 -->
+                <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow" data-mock="true">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 bg-yellow-500 rounded-lg flex items-center justify-center text-white font-bold">
+                                CI
+                            </div>
+                            <div class="ml-3">
+                                <h3 class="font-semibold text-gray-900" data-bind="job.company">Creative Industries</h3>
+                                <p class="text-sm text-neutral" data-bind="job.location">Los Angeles, CA</p>
+                            </div>
+                        </div>
+                        <span class="bg-purple-500 text-white text-xs px-2 py-1 rounded-full" data-bind="job.type">Contract</span>
+                    </div>
+                    
+                    <h4 class="text-lg font-semibold text-gray-900 mb-2" data-bind="job.title">UX Designer</h4>
+                    <p class="text-neutral mb-4" data-bind="job.description">
+                        Design exceptional user experiences for our digital products. Join a creative team that values innovation...
+                    </p>
+                    
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded">Figma</span>
+                        <span class="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded">Adobe XD</span>
+                        <span class="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded">Prototyping</span>
+                    </div>
+                    
+                    <div class="flex justify-between items-center">
+                        <span class="text-primary font-semibold" data-bind="job.salary">$95k - $125k</span>
+                        <button class="text-primary hover:text-secondary font-medium" data-event="click:viewJob">
+                            View Details <i class="fas fa-arrow-right ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- @END_MAP )) -->
+            
+            <div class="text-center mt-12">
+                <a href="#jobs" class="bg-primary text-white px-8 py-3 rounded-md font-medium hover:bg-secondary transition-colors">
+                    View All Jobs
+                </a>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: Featured Jobs Section -->
+
+    <!-- @COMPONENT: Job Listings Page -->
+    <section id="jobs" class="py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">All Job Listings</h2>
+                <p class="text-xl text-neutral">Browse through all available positions</p>
+            </div>
+            
+            <div class="grid lg:grid-cols-4 gap-8">
+                <!-- Filters Sidebar -->
+                <div class="lg:col-span-1">
+                    <div class="bg-white rounded-lg shadow-md p-6 sticky top-24">
+                        <h3 class="font-semibold text-gray-900 mb-4">Filter Jobs</h3>
+                        
+                        <!-- Job Type Filter -->
+                        <div class="mb-6">
+                            <h4 class="font-medium text-gray-700 mb-3">Job Type</h4>
+                            <div class="space-y-2">
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="rounded border-gray-300 text-primary focus:ring-primary" data-bind="filters.fullTime">
+                                    <span class="ml-2 text-sm text-gray-600">Full-time</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="rounded border-gray-300 text-primary focus:ring-primary" data-bind="filters.partTime">
+                                    <span class="ml-2 text-sm text-gray-600">Part-time</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="rounded border-gray-300 text-primary focus:ring-primary" data-bind="filters.contract">
+                                    <span class="ml-2 text-sm text-gray-600">Contract</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="rounded border-gray-300 text-primary focus:ring-primary" data-bind="filters.remote">
+                                    <span class="ml-2 text-sm text-gray-600">Remote</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <!-- Salary Range -->
+                        <div class="mb-6">
+                            <h4 class="font-medium text-gray-700 mb-3">Salary Range</h4>
+                            <select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary" data-bind="filters.salaryRange">
+                                <option value="">Any</option>
+                                <option value="0-50k">$0 - $50k</option>
+                                <option value="50k-75k">$50k - $75k</option>
+                                <option value="75k-100k">$75k - $100k</option>
+                                <option value="100k+">$100k+</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Experience Level -->
+                        <div class="mb-6">
+                            <h4 class="font-medium text-gray-700 mb-3">Experience Level</h4>
+                            <div class="space-y-2">
+                                <label class="flex items-center">
+                                    <input type="radio" name="experience" class="text-primary focus:ring-primary" data-bind="filters.experience" value="entry">
+                                    <span class="ml-2 text-sm text-gray-600">Entry Level</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="radio" name="experience" class="text-primary focus:ring-primary" data-bind="filters.experience" value="mid">
+                                    <span class="ml-2 text-sm text-gray-600">Mid Level</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="radio" name="experience" class="text-primary focus:ring-primary" data-bind="filters.experience" value="senior">
+                                    <span class="ml-2 text-sm text-gray-600">Senior Level</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <button class="w-full bg-primary text-white py-2 rounded-md hover:bg-secondary transition-colors" data-event="click:applyFilters">
+                            Apply Filters
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Job Results -->
+                <div class="lg:col-span-3">
+                    <!-- Search Bar -->
+                    <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                        <div class="flex flex-col md:flex-row gap-4">
+                            <input type="text" 
+                                   placeholder="Search jobs..." 
+                                   class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary"
+                                   data-bind="jobSearchQuery">
+                            <input type="text" 
+                                   placeholder="Location..." 
+                                   class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary"
+                                   data-bind="jobSearchLocation">
+                            <button class="bg-primary text-white px-6 py-2 rounded-md hover:bg-secondary transition-colors">
+                                <i class="fas fa-search mr-2"></i>Search
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Job Results Header -->
+                    <div class="flex justify-between items-center mb-6">
+                        <p class="text-gray-600" data-bind="jobResults.count">Showing 45 jobs</p>
+                        <select class="px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary" data-bind="sortOrder">
+                            <option value="newest">Newest First</option>
+                            <option value="salary-high">Salary: High to Low</option>
+                            <option value="salary-low">Salary: Low to High</option>
+                            <option value="relevance">Most Relevant</option>
+                        </select>
+                    </div>
+                    
+                    <!-- AdSense Placeholder -->
+                    <div class="bg-gray-100 border border-gray-300 rounded-lg p-4 mb-6 text-center text-gray-500">
+                        <!-- AdSense Advertisement Space (728x90) -->
+                        <div class="h-20 flex items-center justify-center text-sm">Advertisement Space</div>
+                    </div>
+                    
+                    <!-- Job Listings -->
+                    <!-- @MAP: jobListings.map(job => ( -->
+                    <div class="space-y-6">
+                        <!-- Job Listing Item 1 -->
+                        <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow" data-mock="true">
+                            <div class="flex flex-col md:flex-row md:items-start md:justify-between">
+                                <div class="flex items-start mb-4 md:mb-0">
+                                    <div class="w-16 h-16 bg-primary rounded-lg flex items-center justify-center text-white font-bold text-lg mr-4">
+                                        MS
+                                    </div>
+                                    <div>
+                                        <h3 class="text-xl font-semibold text-gray-900 mb-1" data-bind="job.title">Marketing Specialist</h3>
+                                        <p class="text-primary font-medium mb-2" data-bind="job.company">Marketing Solutions LLC</p>
+                                        <div class="flex flex-wrap gap-4 text-sm text-neutral">
+                                            <span><i class="fas fa-map-marker-alt mr-1"></i><span data-bind="job.location">Austin, TX</span></span>
+                                            <span><i class="fas fa-clock mr-1"></i><span data-bind="job.type">Full-time</span></span>
+                                            <span><i class="fas fa-dollar-sign mr-1"></i><span data-bind="job.salary">$65k - $85k</span></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex flex-col items-end">
+                                    <button class="bg-primary text-white px-4 py-2 rounded-md hover:bg-secondary transition-colors mb-2" data-event="click:viewJob">
+                                        View Job
+                                    </button>
+                                    <p class="text-sm text-neutral" data-bind="job.postedDate">Posted 2 days ago</p>
+                                </div>
+                            </div>
+                            
+                            <p class="text-gray-600 mt-4 line-clamp-2" data-bind="job.description">
+                                We're seeking a creative Marketing Specialist to join our dynamic team. You'll be responsible for developing and executing marketing campaigns across multiple channels...
+                            </p>
+                            
+                            <div class="flex flex-wrap gap-2 mt-4">
+                                <span class="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded">Digital Marketing</span>
+                                <span class="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded">SEO</span>
+                                <span class="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded">Social Media</span>
+                                <span class="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded">Analytics</span>
+                            </div>
+                        </div>
+
+                        <!-- Job Listing Item 2 -->
+                        <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow" data-mock="true">
+                            <div class="flex flex-col md:flex-row md:items-start md:justify-between">
+                                <div class="flex items-start mb-4 md:mb-0">
+                                    <div class="w-16 h-16 bg-accent rounded-lg flex items-center justify-center text-white font-bold text-lg mr-4">
+                                        FD
+                                    </div>
+                                    <div>
+                                        <h3 class="text-xl font-semibold text-gray-900 mb-1" data-bind="job.title">Frontend Developer</h3>
+                                        <p class="text-primary font-medium mb-2" data-bind="job.company">FinTech Dynamics</p>
+                                        <div class="flex flex-wrap gap-4 text-sm text-neutral">
+                                            <span><i class="fas fa-map-marker-alt mr-1"></i><span data-bind="job.location">Seattle, WA</span></span>
+                                            <span><i class="fas fa-clock mr-1"></i><span data-bind="job.type">Remote</span></span>
+                                            <span><i class="fas fa-dollar-sign mr-1"></i><span data-bind="job.salary">$105k - $130k</span></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex flex-col items-end">
+                                    <button class="bg-primary text-white px-4 py-2 rounded-md hover:bg-secondary transition-colors mb-2" data-event="click:viewJob">
+                                        View Job
+                                    </button>
+                                    <p class="text-sm text-neutral" data-bind="job.postedDate">Posted 1 day ago</p>
+                                </div>
+                            </div>
+                            
+                            <p class="text-gray-600 mt-4 line-clamp-2" data-bind="job.description">
+                                Join our innovative fintech team as a Frontend Developer. Build responsive web applications using modern JavaScript frameworks and help shape the future of financial technology...
+                            </p>
+                            
+                            <div class="flex flex-wrap gap-2 mt-4">
+                                <span class="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded">React</span>
+                                <span class="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded">TypeScript</span>
+                                <span class="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded">CSS</span>
+                                <span class="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded">API Integration</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- @END_MAP )) -->
+                    
+                    <!-- Pagination -->
+                    <div class="flex justify-center mt-12">
+                        <nav class="flex space-x-2">
+                            <button class="px-3 py-2 text-primary hover:bg-primary hover:text-white rounded-md transition-colors" data-event="click:previousPage">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <button class="px-3 py-2 bg-primary text-white rounded-md" data-bind="currentPage">1</button>
+                            <button class="px-3 py-2 text-primary hover:bg-primary hover:text-white rounded-md transition-colors" data-event="click:goToPage" data-page="2">2</button>
+                            <button class="px-3 py-2 text-primary hover:bg-primary hover:text-white rounded-md transition-colors" data-event="click:goToPage" data-page="3">3</button>
+                            <button class="px-3 py-2 text-primary hover:bg-primary hover:text-white rounded-md transition-colors" data-event="click:nextPage">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: Job Listings Page -->
+
+    <!-- @COMPONENT: Job Application Form -->
+    <section id="apply-job" class="py-16 bg-light hidden" data-bind="showApplicationForm">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-white rounded-lg shadow-lg p-8">
+                <div class="mb-8">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-2">Apply for Position</h2>
+                    <p class="text-xl text-neutral">Senior Software Engineer at TechGlobal Inc</p>
+                </div>
+                
+                <!-- Job Interview Career Image -->
+                <div class="mb-8">
+                    <img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=400" 
+                         alt="Job interview career opportunities" 
+                         class="rounded-lg shadow-md w-full h-64 object-cover">
+                </div>
+                
+                <form class="space-y-6" data-event="submit:submitApplication" data-implementation="Should validate form and handle file uploads before submission">
+                    <!-- Personal Information -->
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">First Name *</label>
+                            <input type="text" 
+                                   required 
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary"
+                                   data-bind="application.firstName">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Last Name *</label>
+                            <input type="text" 
+                                   required 
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary"
+                                   data-bind="application.lastName">
+                        </div>
+                    </div>
+                    
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Email Address *</label>
+                            <input type="email" 
+                                   required 
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary"
+                                   data-bind="application.email">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
+                            <input type="tel" 
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary"
+                                   data-bind="application.phone">
+                        </div>
+                    </div>
+                    
+                    <!-- File Uploads -->
+                    <!-- @FUNCTIONALITY: File upload handling with size limits and type validation -->
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Resume/CV *</label>
+                            <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-primary transition-colors">
+                                <i class="fas fa-upload text-gray-400 text-2xl mb-2"></i>
+                                <p class="text-gray-600 mb-2">Drag and drop your resume or</p>
+                                <input type="file" 
+                                       accept=".pdf,.doc,.docx" 
+                                       class="hidden" 
+                                       id="resume-upload"
+                                       data-bind="application.resume"
+                                       data-implementation="Should validate file size (max 10MB) and type">
+                                <label for="resume-upload" class="text-primary hover:text-secondary cursor-pointer font-medium">
+                                    Browse Files
+                                </label>
+                                <p class="text-xs text-gray-500 mt-2">PDF, DOC, DOCX (Max 10MB)</p>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Cover Letter</label>
+                            <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-primary transition-colors">
+                                <i class="fas fa-upload text-gray-400 text-2xl mb-2"></i>
+                                <p class="text-gray-600 mb-2">Drag and drop your cover letter or</p>
+                                <input type="file" 
+                                       accept=".pdf,.doc,.docx" 
+                                       class="hidden" 
+                                       id="cover-letter-upload"
+                                       data-bind="application.coverLetter">
+                                <label for="cover-letter-upload" class="text-primary hover:text-secondary cursor-pointer font-medium">
+                                    Browse Files
+                                </label>
+                                <p class="text-xs text-gray-500 mt-2">PDF, DOC, DOCX (Max 5MB)</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Additional Files -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Certificates & Portfolio (Optional)</label>
+                        <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-primary transition-colors">
+                            <i class="fas fa-upload text-gray-400 text-2xl mb-2"></i>
+                            <p class="text-gray-600 mb-2">Upload additional files (certificates, portfolio, etc.)</p>
+                            <input type="file" 
+                                   multiple 
+                                   accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" 
+                                   class="hidden" 
+                                   id="additional-files"
+                                   data-bind="application.additionalFiles">
+                            <label for="additional-files" class="text-primary hover:text-secondary cursor-pointer font-medium">
+                                Browse Files
+                            </label>
+                            <p class="text-xs text-gray-500 mt-2">Multiple files allowed (Max 5MB each)</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Experience & Skills -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Years of Experience</label>
+                        <select class="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary" data-bind="application.experience">
+                            <option value="">Select experience level</option>
+                            <option value="0-1">0-1 years</option>
+                            <option value="2-3">2-3 years</option>
+                            <option value="4-6">4-6 years</option>
+                            <option value="7-10">7-10 years</option>
+                            <option value="10+">10+ years</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Additional Comments</label>
+                        <textarea rows="4" 
+                                  class="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary"
+                                  placeholder="Tell us why you're interested in this position..."
+                                  data-bind="application.comments"></textarea>
+                    </div>
+                    
+                    <!-- Terms & Conditions -->
+                    <div class="flex items-start">
+                        <input type="checkbox" 
+                               id="terms" 
+                               required 
+                               class="mt-1 rounded border-gray-300 text-primary focus:ring-primary"
+                               data-bind="application.acceptTerms">
+                        <label for="terms" class="ml-2 text-sm text-gray-600">
+                            I agree to the <a href="#" class="text-primary hover:text-secondary">Terms & Conditions</a> and <a href="#" class="text-primary hover:text-secondary">Privacy Policy</a> *
+                        </label>
+                    </div>
+                    
+                    <div class="flex gap-4">
+                        <button type="submit" 
+                                class="bg-primary text-white px-8 py-3 rounded-md font-medium hover:bg-secondary transition-colors">
+                            <i class="fas fa-paper-plane mr-2"></i>Submit Application
+                        </button>
+                        <button type="button" 
+                                class="bg-gray-200 text-gray-700 px-8 py-3 rounded-md font-medium hover:bg-gray-300 transition-colors"
+                                data-event="click:saveAsDraft">
+                            <i class="fas fa-save mr-2"></i>Save as Draft
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: Job Application Form -->
+
+    <!-- @COMPONENT: Blog Section -->
+    <section id="blog" class="py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Career Insights & Resources</h2>
+                <p class="text-xl text-neutral">Expert advice and tips to advance your career</p>
+            </div>
+            
+            <!-- AdSense Placeholder -->
+            <div class="bg-gray-100 border border-gray-300 rounded-lg p-4 mb-12 text-center text-gray-500">
+                <!-- AdSense Advertisement Space (728x90) -->
+                <div class="h-20 flex items-center justify-center text-sm">Advertisement Space</div>
+            </div>
+            
+            <!-- @MAP: blogPosts.map(post => ( -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Blog Post 1 -->
+                <article class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow" data-mock="true">
+                    <!-- Business blog content image -->
+                    <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=400" 
+                         alt="Business blog content and professional writing" 
+                         class="w-full h-48 object-cover">
+                    
+                    <div class="p-6">
+                        <div class="flex items-center mb-3">
+                            <span class="bg-primary text-white text-xs px-2 py-1 rounded" data-bind="post.category">Career Tips</span>
+                            <span class="text-sm text-neutral ml-2" data-bind="post.date">March 15, 2024</span>
+                        </div>
+                        
+                        <h3 class="text-xl font-semibold text-gray-900 mb-3" data-bind="post.title">
+                            10 Essential Skills for Tech Professionals in 2024
+                        </h3>
+                        
+                        <p class="text-gray-600 mb-4" data-bind="post.excerpt">
+                            Discover the most in-demand skills that will set you apart in the competitive tech job market this year...
+                        </p>
+                        
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white text-sm font-medium">
+                                    JS
+                                </div>
+                                <span class="ml-2 text-sm text-gray-700" data-bind="post.author">Jane Smith</span>
+                            </div>
+                            <a href="#" class="text-primary hover:text-secondary font-medium" data-event="click:readPost">
+                                Read More <i class="fas fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Blog Post 2 -->
+                <article class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow" data-mock="true">
+                    <!-- Professional resume and career planning image -->
+                    <img src="https://images.unsplash.com/photo-1586953208448-b95a79798f07?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=400" 
+                         alt="Professional resume and career planning documents" 
+                         class="w-full h-48 object-cover">
+                    
+                    <div class="p-6">
+                        <div class="flex items-center mb-3">
+                            <span class="bg-accent text-white text-xs px-2 py-1 rounded" data-bind="post.category">Resume Tips</span>
+                            <span class="text-sm text-neutral ml-2" data-bind="post.date">March 12, 2024</span>
+                        </div>
+                        
+                        <h3 class="text-xl font-semibold text-gray-900 mb-3" data-bind="post.title">
+                            How to Write a Resume That Gets Noticed
+                        </h3>
+                        
+                        <p class="text-gray-600 mb-4" data-bind="post.excerpt">
+                            Learn the secrets to crafting a compelling resume that stands out to recruiters and hiring managers...
+                        </p>
+                        
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="w-8 h-8 bg-accent rounded-full flex items-center justify-center text-white text-sm font-medium">
+                                    MD
+                                </div>
+                                <span class="ml-2 text-sm text-gray-700" data-bind="post.author">Mike Davis</span>
+                            </div>
+                            <a href="#" class="text-primary hover:text-secondary font-medium" data-event="click:readPost">
+                                Read More <i class="fas fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Blog Post 3 -->
+                <article class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow" data-mock="true">
+                    <!-- Remote work and digital nomad lifestyle image -->
+                    <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=400" 
+                         alt="Remote work setup with laptop and coffee" 
+                         class="w-full h-48 object-cover">
+                    
+                    <div class="p-6">
+                        <div class="flex items-center mb-3">
+                            <span class="bg-secondary text-white text-xs px-2 py-1 rounded" data-bind="post.category">Remote Work</span>
+                            <span class="text-sm text-neutral ml-2" data-bind="post.date">March 10, 2024</span>
+                        </div>
+                        
+                        <h3 class="text-xl font-semibold text-gray-900 mb-3" data-bind="post.title">
+                            The Complete Guide to Remote Job Applications
+                        </h3>
+                        
+                        <p class="text-gray-600 mb-4" data-bind="post.excerpt">
+                            Master the art of applying for remote positions with these proven strategies and best practices...
+                        </p>
+                        
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="w-8 h-8 bg-secondary rounded-full flex items-center justify-center text-white text-sm font-medium">
+                                    AC
+                                </div>
+                                <span class="ml-2 text-sm text-gray-700" data-bind="post.author">Alex Chen</span>
+                            </div>
+                            <a href="#" class="text-primary hover:text-secondary font-medium" data-event="click:readPost">
+                                Read More <i class="fas fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Blog Post 4 -->
+                <article class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow" data-mock="true">
+                    <!-- Professional networking and business meeting image -->
+                    <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=400" 
+                         alt="Professional networking and business meeting" 
+                         class="w-full h-48 object-cover">
+                    
+                    <div class="p-6">
+                        <div class="flex items-center mb-3">
+                            <span class="bg-purple-500 text-white text-xs px-2 py-1 rounded" data-bind="post.category">Networking</span>
+                            <span class="text-sm text-neutral ml-2" data-bind="post.date">March 8, 2024</span>
+                        </div>
+                        
+                        <h3 class="text-xl font-semibold text-gray-900 mb-3" data-bind="post.title">
+                            Building Professional Networks That Open Doors
+                        </h3>
+                        
+                        <p class="text-gray-600 mb-4" data-bind="post.excerpt">
+                            Networking isn't just about collecting business cards. Learn how to build meaningful professional relationships...
+                        </p>
+                        
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center text-white text-sm font-medium">
+                                    LT
+                                </div>
+                                <span class="ml-2 text-sm text-gray-700" data-bind="post.author">Lisa Taylor</span>
+                            </div>
+                            <a href="#" class="text-primary hover:text-secondary font-medium" data-event="click:readPost">
+                                Read More <i class="fas fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </article>
+            </div>
+            <!-- @END_MAP )) -->
+            
+            <div class="text-center mt-12">
+                <a href="#" class="bg-primary text-white px-8 py-3 rounded-md font-medium hover:bg-secondary transition-colors">
+                    View All Articles
+                </a>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: Blog Section -->
+
+    <!-- @COMPONENT: About Section -->
+    <section id="about" class="py-16 bg-light">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="text-3xl font-bold text-gray-900 mb-6">About DataMind Jobs</h2>
+                    <p class="text-lg text-gray-600 mb-6">
+                        DataMind Jobs is your trusted partner in professional career development. We connect talented individuals with leading companies, creating opportunities that transform careers and businesses alike.
+                    </p>
+                    <p class="text-gray-600 mb-6">
+                        Since our founding, we've helped thousands of professionals find their ideal roles while assisting companies in building exceptional teams. Our platform combines cutting-edge technology with personalized service to deliver results that matter.
+                    </p>
+                    
+                    <!-- Stats -->
+                    <div class="grid grid-cols-3 gap-4 mb-8">
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-primary" data-bind="stats.jobsPosted">5,000+</div>
+                            <div class="text-sm text-neutral">Jobs Posted</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-primary" data-bind="stats.companiesServed">500+</div>
+                            <div class="text-sm text-neutral">Companies</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-primary" data-bind="stats.candidatesPlaced">15,000+</div>
+                            <div class="text-sm text-neutral">Candidates Hired</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Mission Points -->
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-accent text-xl mr-3 mt-1"></i>
+                            <div>
+                                <h4 class="font-semibold text-gray-900 mb-1">Quality First</h4>
+                                <p class="text-gray-600 text-sm">We carefully vet all job postings and companies to ensure legitimate opportunities.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-accent text-xl mr-3 mt-1"></i>
+                            <div>
+                                <h4 class="font-semibold text-gray-900 mb-1">Personal Support</h4>
+                                <p class="text-gray-600 text-sm">Our team provides personalized guidance throughout your job search journey.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-accent text-xl mr-3 mt-1"></i>
+                            <div>
+                                <h4 class="font-semibold text-gray-900 mb-1">Industry Expertise</h4>
+                                <p class="text-gray-600 text-sm">Deep knowledge across multiple industries and career levels.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <!-- Professional team meeting image -->
+                    <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=600" 
+                         alt="Professional team meeting and collaboration" 
+                         class="rounded-lg shadow-lg w-full h-auto">
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: About Section -->
+
+    <!-- @COMPONENT: Contact Section -->
+    <section id="contact" class="py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Get in Touch</h2>
+                <p class="text-xl text-neutral">Have questions? We're here to help you succeed.</p>
+            </div>
+            
+            <div class="grid lg:grid-cols-3 gap-8">
+                <!-- Contact Info -->
+                <div class="lg:col-span-1">
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h3 class="text-xl font-semibold text-gray-900 mb-6">Contact Information</h3>
+                        
+                        <div class="space-y-4">
+                            <div class="flex items-start">
+                                <i class="fas fa-map-marker-alt text-primary text-xl mr-3 mt-1"></i>
+                                <div>
+                                    <h4 class="font-medium text-gray-900">Address</h4>
+                                    <p class="text-gray-600">123 Business District<br>San Francisco, CA 94105</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <i class="fas fa-phone text-primary text-xl mr-3 mt-1"></i>
+                                <div>
+                                    <h4 class="font-medium text-gray-900">Phone</h4>
+                                    <p class="text-gray-600">(555) 123-4567</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <i class="fas fa-envelope text-primary text-xl mr-3 mt-1"></i>
+                                <div>
+                                    <h4 class="font-medium text-gray-900">Email</h4>
+                                    <p class="text-gray-600">hello@datamindjobs.com</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <i class="fas fa-clock text-primary text-xl mr-3 mt-1"></i>
+                                <div>
+                                    <h4 class="font-medium text-gray-900">Business Hours</h4>
+                                    <p class="text-gray-600">Mon - Fri: 9:00 AM - 6:00 PM<br>Sat: 10:00 AM - 4:00 PM</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Social Links -->
+                        <div class="mt-8">
+                            <h4 class="font-medium text-gray-900 mb-4">Follow Us</h4>
+                            <div class="flex space-x-4">
+                                <a href="#" class="text-primary hover:text-secondary text-xl">
+                                    <i class="fab fa-linkedin"></i>
+                                </a>
+                                <a href="#" class="text-primary hover:text-secondary text-xl">
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                                <a href="#" class="text-primary hover:text-secondary text-xl">
+                                    <i class="fab fa-facebook"></i>
+                                </a>
+                                <a href="#" class="text-primary hover:text-secondary text-xl">
+                                    <i class="fab fa-instagram"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Contact Form -->
+                <div class="lg:col-span-2">
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h3 class="text-xl font-semibold text-gray-900 mb-6">Send us a Message</h3>
+                        
+                        <form class="space-y-6" data-event="submit:submitContactForm" data-implementation="Should validate form and send email">
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Name *</label>
+                                    <input type="text" 
+                                           required 
+                                           class="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary"
+                                           data-bind="contact.name">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Email *</label>
+                                    <input type="email" 
+                                           required 
+                                           class="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary"
+                                           data-bind="contact.email">
+                                </div>
+                            </div>
+                            
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Phone</label>
+                                    <input type="tel" 
+                                           class="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary"
+                                           data-bind="contact.phone">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Subject *</label>
+                                    <select class="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary" 
+                                            required 
+                                            data-bind="contact.subject">
+                                        <option value="">Select a subject</option>
+                                        <option value="job-seeker">Job Seeker Support</option>
+                                        <option value="employer">Employer Services</option>
+                                        <option value="technical">Technical Support</option>
+                                        <option value="partnership">Partnership Inquiry</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Message *</label>
+                                <textarea rows="6" 
+                                          required 
+                                          class="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary"
+                                          placeholder="Tell us how we can help you..."
+                                          data-bind="contact.message"></textarea>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <input type="checkbox" 
+                                       id="privacy" 
+                                       required 
+                                       class="mt-1 rounded border-gray-300 text-primary focus:ring-primary"
+                                       data-bind="contact.acceptPrivacy">
+                                <label for="privacy" class="ml-2 text-sm text-gray-600">
+                                    I agree to the <a href="#" class="text-primary hover:text-secondary">Privacy Policy</a> *
+                                </label>
+                            </div>
+                            
+                            <button type="submit" 
+                                    class="bg-primary text-white px-8 py-3 rounded-md font-medium hover:bg-secondary transition-colors">
+                                <i class="fas fa-paper-plane mr-2"></i>Send Message
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: Contact Section -->
+
+    <!-- @COMPONENT: Footer -->
+    <footer class="bg-gray-900 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid md:grid-cols-4 gap-8">
+                <!-- Company Info -->
+                <div class="md:col-span-1">
+                    <h3 class="text-2xl font-bold text-white mb-4">DataMind Jobs</h3>
+                    <p class="text-gray-400 mb-4">
+                        Connecting talent with opportunity. Your career journey starts here.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i class="fab fa-linkedin text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i class="fab fa-twitter text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i class="fab fa-facebook text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i class="fab fa-instagram text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Job Seekers -->
+                <div>
+                    <h4 class="font-semibold text-white mb-4">For Job Seekers</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white transition-colors">Browse Jobs</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Career Advice</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Resume Builder</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Salary Guide</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Interview Tips</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Employers -->
+                <div>
+                    <h4 class="font-semibold text-white mb-4">For Employers</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white transition-colors">Post a Job</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Find Candidates</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Recruiting Solutions</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Pricing</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Success Stories</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Company -->
+                <div>
+                    <h4 class="font-semibold text-white mb-4">Company</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#about" class="hover:text-white transition-colors">About Us</a></li>
+                        <li><a href="#contact" class="hover:text-white transition-colors">Contact</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Terms of Service</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Help Center</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Bottom Bar -->
+            <div class="border-t border-gray-800 pt-8 mt-8">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <p class="text-gray-400 text-sm">
+                        © 2024 DataMind Jobs. All rights reserved.
+                    </p>
+                    <div class="flex space-x-6 mt-4 md:mt-0">
+                        <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">Privacy</a>
+                        <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">Terms</a>
+                        <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">Cookies</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- @END_COMPONENT: Footer -->
+
+    <!-- JavaScript for Interactivity -->
+    <script>
+    (function() {
+        // TODO: Implement business logic, API calls, and state management
+        
+        // Basic mobile menu toggle
+        const mobileMenuButton = document.querySelector('[data-event="click:toggleMobileMenu"]');
+        const mobileMenu = document.querySelector('[data-bind="mobileMenuOpen"]');
+        
+        if (mobileMenuButton && mobileMenu) {
+            mobileMenuButton.addEventListener('click', function() {
+                mobileMenu.classList.toggle('hidden');
+            });
+        }
+        
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        
+        // Form submission handlers (placeholder)
+        document.querySelectorAll('form').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                // TODO: Add form validation and submission logic
+                console.log('Form submitted:', this);
+                alert('Form submitted! (This is a demo - implement actual form handling)');
+            });
+        });
+        
+        // File upload handling (placeholder)
+        document.querySelectorAll('input[type="file"]').forEach(input => {
+            input.addEventListener('change', function() {
+                // TODO: Add file validation (size, type)
+                // TODO: Implement file upload to server
+                console.log('Files selected:', this.files);
+            });
+        });
+        
+    })();
+    </script>
+</body>
+</html>

@@ -14,11 +14,13 @@ import BlogPost from "@/pages/blog-post";
 import About from "@/pages/about";
 import Contact from "@/pages/contact";
 import NotFound from "@/pages/not-found";
+import ScrollToTop from "./components/ScrollToTop";
 
 function Router() {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
+       <ScrollToTop />
       <main className="flex-1">
         <Switch>
           <Route path="/" component={Home} />

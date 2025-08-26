@@ -5,37 +5,61 @@ import BlogCard from "@/components/blog-card";
 import type { BlogPost } from "@shared/schema";
 import { useState } from "react";
 
+function buildQueryString(params: Record<string, any>) {
+  return Object.entries(params)
+    .filter(([_, v]) => v !== undefined && v !== null && v !== "")
+    .map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v)}`)
+    .join("&");
+}
+
 export default function Blog() {
   const [currentPage, setCurrentPage] = useState(1);
   const limit = 12;
 
   const { data: blogPosts, isLoading } = useQuery<BlogPost[]>({
     queryKey: ["/api/blog", { limit, offset: (currentPage - 1) * limit }],
+    queryFn: async ({ queryKey }) => {
+      const [_url, params] = queryKey;
+      const qs = buildQueryString(params as Record<string, any>);
+      const res = await fetch(`${_url}?${qs}`);
+      if (!res.ok) throw new Error("Failed to fetch jobs");
+      return res.json();
+    },
   });
 
   return (
-    <div className="min-h-screen py-16">
+    <div className="min-h-screen pb-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <h1 className="text-3xl font-bold text-gray-900 mb-4" data-testid="text-blog-title">
+          <h1
+            className="text-3xl font-bold text-gray-900 mb-4"
+            data-testid="text-blog-title"
+          >
             Career Insights & Resources
           </h1>
           <p className="text-xl text-neutral" data-testid="text-blog-subtitle">
             Expert advice and tips to advance your career
           </p>
         </div>
-        
+
         {/* AdSense Placeholder */}
         <div className="bg-gray-100 border border-gray-300 rounded-lg p-4 mb-12 text-center text-gray-500">
-          <div className="h-20 flex items-center justify-center text-sm" data-testid="ad-space-blog">
+          <div
+            className="h-20 flex items-center justify-center text-sm"
+            data-testid="ad-space-blog"
+          >
             Advertisement Space
           </div>
         </div>
-        
+
         {isLoading ? (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[...Array(6)].map((_, i) => (
-              <div key={i} className="bg-white rounded-lg shadow-md overflow-hidden animate-pulse" data-testid={`skeleton-blog-${i}`}>
+              <div
+                key={i}
+                className="bg-white rounded-lg shadow-md overflow-hidden animate-pulse"
+                data-testid={`skeleton-blog-${i}`}
+              >
                 <div className="h-48 bg-gray-200"></div>
                 <div className="p-6 space-y-4">
                   <div className="h-4 bg-gray-200 rounded w-1/4"></div>
@@ -55,7 +79,10 @@ export default function Blog() {
           </div>
         ) : (
           <>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8" data-testid="grid-blog-posts">
+            <div
+              className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
+              data-testid="grid-blog-posts"
+            >
               {blogPosts?.map((post) => (
                 <BlogCard key={post.id} post={post} />
               ))}
@@ -63,8 +90,12 @@ export default function Blog() {
 
             {blogPosts?.length === 0 && (
               <div className="text-center py-12" data-testid="no-blog-posts">
-                <p className="text-gray-600 text-lg">No blog posts available at the moment.</p>
-                <p className="text-gray-600">Check back soon for new career insights and tips!</p>
+                <p className="text-gray-600 text-lg">
+                  No blog posts available at the moment.
+                </p>
+                <p className="text-gray-600">
+                  Check back soon for new career insights and tips!
+                </p>
               </div>
             )}
 
@@ -74,18 +105,24 @@ export default function Blog() {
                 <nav className="flex space-x-2" data-testid="blog-pagination">
                   <Button
                     variant="outline"
-                    onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                    onClick={() =>
+                      setCurrentPage((prev) => Math.max(1, prev - 1))
+                    }
                     disabled={currentPage === 1}
                     data-testid="button-previous-page"
                   >
                     Previous
                   </Button>
-                  <Button variant="outline" className="bg-primary text-white" data-testid="text-current-page">
+                  <Button
+                    variant="outline"
+                    className="bg-primary text-white"
+                    data-testid="text-current-page"
+                  >
                     {currentPage}
                   </Button>
                   <Button
                     variant="outline"
-                    onClick={() => setCurrentPage(prev => prev + 1)}
+                    onClick={() => setCurrentPage((prev) => prev + 1)}
                     disabled={blogPosts.length < limit}
                     data-testid="button-next-page"
                   >
@@ -97,7 +134,10 @@ export default function Blog() {
 
             {/* Additional AdSense space at bottom */}
             <div className="bg-gray-100 border border-gray-300 rounded-lg p-4 mt-12 text-center text-gray-500">
-              <div className="h-20 flex items-center justify-center text-sm" data-testid="ad-space-blog-bottom">
+              <div
+                className="h-20 flex items-center justify-center text-sm"
+                data-testid="ad-space-blog-bottom"
+              >
                 Advertisement Space
               </div>
             </div>
