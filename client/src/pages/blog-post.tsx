@@ -133,7 +133,7 @@ export default function BlogPostPage() {
               <div className="flex flex-wrap items-center gap-6 text-gray-600 mb-6">
                 <div className="flex items-center">
                   <Calendar className="w-4 h-4 mr-2" />
-                  <span data-testid="text-date">{formatDate(post.publishedAt)}</span>
+                  <span data-testid="text-date">{post.publishedAt ? formatDate(post.publishedAt) : 'Recently published'}</span>
                 </div>
                 <div className="flex items-center">
                   <User className="w-4 h-4 mr-2" />

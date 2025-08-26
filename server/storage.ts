@@ -79,7 +79,7 @@ export class DatabaseStorage implements IStorage {
   async createUser(insertUser: InsertUser): Promise<User> {
     const [user] = await db
       .insert(users)
-      .values(insertUser)
+      .values([insertUser])
       .returning();
     return user;
   }
@@ -97,7 +97,7 @@ export class DatabaseStorage implements IStorage {
   async createCompany(company: InsertCompany): Promise<Company> {
     const [newCompany] = await db
       .insert(companies)
-      .values(company)
+      .values([company])
       .returning();
     return newCompany;
   }
@@ -113,12 +113,6 @@ export class DatabaseStorage implements IStorage {
     limit?: number;
     offset?: number;
   }): Promise<JobWithCompany[]> {
-    let query = db
-      .select()
-      .from(jobs)
-      .leftJoin(companies, eq(jobs.companyId, companies.id))
-      .where(eq(jobs.isActive, true));
-
     const conditions = [eq(jobs.isActive, true)];
 
     if (filters?.search) {
@@ -147,11 +141,12 @@ export class DatabaseStorage implements IStorage {
       conditions.push(lte(jobs.salaryMax, filters.salaryMax));
     }
 
-    if (conditions.length > 1) {
-      query = query.where(and(...conditions));
-    }
-
-    query = query.orderBy(desc(jobs.postedAt));
+    let query = db
+      .select()
+      .from(jobs)
+      .leftJoin(companies, eq(jobs.companyId, companies.id))
+      .where(and(...conditions))
+      .orderBy(desc(jobs.postedAt));
 
     if (filters?.limit) {
       query = query.limit(filters.limit);
@@ -202,20 +197,21 @@ export class DatabaseStorage implements IStorage {
   async createJob(job: InsertJob): Promise<Job> {
     const [newJob] = await db
       .insert(jobs)
-      .values(job)
+      .values([job])
       .returning();
     return newJob;
   }
 
   // Job application methods
   async getJobApplications(jobId?: string): Promise<JobApplication[]> {
-    let query = db.select().from(jobApplications);
-    
     if (jobId) {
-      query = query.where(eq(jobApplications.jobId, jobId));
+      return await db.select().from(jobApplications)
+        .where(eq(jobApplications.jobId, jobId))
+        .orderBy(desc(jobApplications.appliedAt));
     }
 
-    return await query.orderBy(desc(jobApplications.appliedAt));
+    return await db.select().from(jobApplications)
+      .orderBy(desc(jobApplications.appliedAt));
   }
 
   async getJobApplication(id: string): Promise<JobApplication | undefined> {
@@ -226,7 +222,7 @@ export class DatabaseStorage implements IStorage {
   async createJobApplication(application: InsertJobApplication): Promise<JobApplication> {
     const [newApplication] = await db
       .insert(jobApplications)
-      .values(application)
+      .values([application])
       .returning();
     return newApplication;
   }
@@ -259,7 +255,7 @@ export class DatabaseStorage implements IStorage {
   async createBlogPost(blogPost: InsertBlogPost): Promise<BlogPost> {
     const [newPost] = await db
       .insert(blogPosts)
-      .values(blogPost)
+      .values([blogPost])
       .returning();
     return newPost;
   }
@@ -272,7 +268,7 @@ export class DatabaseStorage implements IStorage {
   async createContactMessage(message: InsertContactMessage): Promise<ContactMessage> {
     const [newMessage] = await db
       .insert(contactMessages)
-      .values(message)
+      .values([message])
       .returning();
     return newMessage;
   }

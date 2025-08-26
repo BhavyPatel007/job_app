@@ -61,7 +61,7 @@ export default function BlogCard({ post }: BlogCardProps) {
             {post.category}
           </Badge>
           <span className="text-sm text-neutral ml-2" data-testid={`text-date-${post.id}`}>
-            {formatDate(post.publishedAt)}
+            {post.publishedAt ? formatDate(post.publishedAt) : 'Recently published'}
           </span>
         </div>
         

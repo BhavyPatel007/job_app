@@ -147,7 +147,7 @@ export default function JobDetails() {
                     </span>
                     <span className="flex items-center">
                       <Calendar className="w-4 h-4 mr-2" />
-                      <span data-testid="text-job-posted">Posted {formatDate(job.postedAt)}</span>
+                      <span data-testid="text-job-posted">Posted {job.postedAt ? formatDate(job.postedAt) : 'recently'}</span>
                     </span>
                   </div>
                 </div>

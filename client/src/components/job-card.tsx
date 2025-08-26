@@ -99,7 +99,7 @@ export default function JobCard({ job, variant = "featured" }: JobCardProps) {
                 </Button>
               </Link>
               <p className="text-sm text-neutral" data-testid={`text-posted-date-${job.id}`}>
-                {formatDate(job.postedAt)}
+                {job.postedAt ? formatDate(job.postedAt) : 'Recently posted'}
               </p>
             </div>
           </div>

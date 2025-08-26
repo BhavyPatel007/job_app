@@ -1,8 +1,8 @@
-import type { Express } from "express";
+import type { Express, Request } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertJobApplicationSchema, insertContactMessageSchema } from "@shared/schema";
-import multer from "multer";
+import multer, { FileFilterCallback } from "multer";
 import path from "path";
 import fs from "fs";
 
@@ -17,7 +17,7 @@ const upload = multer({
   limits: {
     fileSize: 10 * 1024 * 1024, // 10MB limit
   },
-  fileFilter: (req, file, cb) => {
+  fileFilter: (req: Request, file: Express.Multer.File, cb: FileFilterCallback) => {
     const allowedTypes = [
       'application/pdf',
       'application/msword',
@@ -109,12 +109,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(404).json({ error: "Job not found" });
       }
 
-      const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+      const files = req.files as { [fieldname: string]: Express.Multer.File[] } | undefined;
       
       // Process uploaded files
-      const resumeUrl = files.resume?.[0]?.filename || undefined;
-      const coverLetterUrl = files.coverLetter?.[0]?.filename || undefined;
-      const additionalFiles = files.additionalFiles?.map(file => file.filename) || [];
+      const resumeUrl = files?.resume?.[0]?.filename || undefined;
+      const coverLetterUrl = files?.coverLetter?.[0]?.filename || undefined;
+      const additionalFiles = files?.additionalFiles?.map(file => file.filename) || [];
 
       const applicationData = {
         ...req.body,
