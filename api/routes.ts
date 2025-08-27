@@ -1,6 +1,6 @@
 import type { Express, Request } from "express";
 import { createServer, type Server } from "http";
-import { supabase } from "../server";
+import { supabase } from ".";
 import { insertJobApplicationSchema, insertContactMessageSchema } from "@shared/schema";
 import multer, { FileFilterCallback } from "multer";
 import path from "path";
