@@ -39,7 +39,7 @@ app.use((req, res, next) => {
   next();
 });
 
-// Register routes (example: /api/users)
+// Register routes
 (async () => {
   const server = await registerRoutes(app);
 
@@ -51,21 +51,23 @@ app.use((req, res, next) => {
     console.error(err);
   });
 
-  if (app.get("env") === "development") {
-    // Setup Vite dev server
+  if (process.env.NODE_ENV === "development") {
+    // Setup Vite dev server WITH the Node server
     await setupVite(app, server);
+
+    const port = parseInt(process.env.PORT || "6543", 10);
+    server.listen(port, "0.0.0.0", () => log(`🚀 Dev server at http://localhost:${port}`));
   } else {
-    // Serve built frontend from dist/
+    // Serve frontend build on Vercel
     const distPath = path.join(__dirname, "dist");
     app.use(express.static(distPath));
 
-    // Fallback for React Router SPA
+    // Fallback for SPA routes
     app.get("*", (_req, res) => {
       res.sendFile(path.join(distPath, "index.html"));
     });
   }
-
-  // Backend port (different from Vite frontend)
-  const port = parseInt(process.env.PORT || "6543", 10);
-  app.listen(port, "0.0.0.0", () => log(`🚀 Backend running at http://localhost:${port}`));
 })();
+
+// ⚡ Export app for Vercel
+export default app;
